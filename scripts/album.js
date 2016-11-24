@@ -29,6 +29,23 @@ var albumPicasso = {
      ]
  };
 
+var albumElephant = {
+     title: 'The Elephant Man',
+     artist: 'Marcus Martindale',
+     label: 'EMpathy',
+     year: '1930',
+     albumArtUrl: 'assets/images/album_covers/20.png',
+     songs: [
+         { title: 'Hello, peanuts?', duration: '1:01' },
+         { title: 'Ring, rang, rung', duration: '5:01' },
+         { title: 'Fits in your trunk', duration: '3:21'},
+         { title: 'Can you tusk me now?', duration: '3:14' },
+         { title: 'Wrong number in herd', duration: '2:15'}
+     ]
+ };
+
+var albumArray = [albumPicasso, albumMarconi, albumElephant];
+
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -63,7 +80,17 @@ var setCurrentAlbum = function(album) {
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
  };
+var index = 0;
+var rotateAlbums = function(array){
+    index += 1;
+    index = index % array.length;
+    console.log(index);
+    setCurrentAlbum(array[index]); 
+};
  
+
+
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+     document.getElementsByClassName("album-cover-art")[0].addEventListener('click',function(){rotateAlbums(albumArray);});
  };
