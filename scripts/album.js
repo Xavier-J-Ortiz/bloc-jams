@@ -63,9 +63,82 @@ var setCurrentAlbum = function(album) {
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
  };
+
+
+var findParentByClassName = function(element, targetClass) {
+    if (element) {
+        var currentParent = element.parentElement;
+        while (currentParent.className != targetClass && currentParent.className !== null) {
+            currentParent = currentParent.parentElement;
+        }
+        return currentParent;
+    }
+};
+// commented below is an attempt at the findParentByClassName//
+// Not sure if it works, but definietly not how the checkpoint was thinking//
+// as I was thinking of applying it using dot notation as if an element object//
+/*
+function findParentClassName(theClassName){    
+    if (this.hasClass(theClassName)) {
+        return this;
+    }
+    else{
+        this.findParentClassName(theClassName);        
+    }
+}
+*/
+
+var getSongItem = function(element) {
+    switch (element.className) {
+        case 'album-song-button':
+        case 'ion-play':
+        case 'ion-pause':
+            return findParentByClassName(element, 'song-item-number');
+        case 'album-view-song-item':
+            return element.querySelector('.song-item-number');
+        case 'song-item-title':
+        case 'song-item-duration':
+            return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
+        case 'song-item-number':
+            return element;
+        default:
+            return;
+    }  
+};
+
+// this was my attempt below at this function. Clearly, I didn't understand what//
+// the intent of the function was.
+/*
+function getSongItem(element){
+    
+    if (element){
+        var answerElement = findParentByClassName(element, '.song-item-number');
+        return answerElement.innerHTML;
+    }
+};
+*/
+
+ var clickHandler = function(targetElement) {
+     var songItem = getSongItem(targetElement);
+     if (currentlyPlayingSong === null) {
+         songItem.innerHTML = pauseButtonTemplate;
+         currentlyPlayingSong = songItem.getAttribute('data-song-number');
+     } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
+         songItem.innerHTML = playButtonTemplate;
+         currentlyPlayingSong = null;
+     } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
+         var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
+         currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
+         songItem.innerHTML = pauseButtonTemplate;
+         currentlyPlayingSong = songItem.getAttribute('data-song-number');
+     }
+ };
+
 var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 var songRows = document.getElementsByClassName('album-view-song-item');
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+ var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+var currentlyPlayingSong = null;
 
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
@@ -73,12 +146,26 @@ var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></
      songListContainer.addEventListener('mouseover', function(event) {
          if (event.target.parentElement.className === 'album-view-song-item') {
              event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+             var songItem = getSongItem(event.target);
+             if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
+                 songItem.innerHTML = playButtonTemplate;
+             }
          }
      });
      
      for (var i = 0; i < songRows.length; i++) {
          songRows[i].addEventListener('mouseleave', function(event) {
-             this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');         
+             var songItem = getSongItem(event.target);
+             var songItemNumber = songItem.getAttribute('data-song-number'); 
+             // #2
+             if (songItemNumber !== currentlyPlayingSong) {
+                 songItem.innerHTML = songItemNumber;
+             }
          });
+         
+         songRows[i].addEventListener('click', function(event) {
+             clickHandler(event.target);
+         });
+         
      }          
  };
