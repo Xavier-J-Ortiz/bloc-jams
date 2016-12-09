@@ -1,3 +1,10 @@
+var setSong = function(songNumber){
+    
+    currentlyPlayingSongNumber = songNumber;
+    currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
+    
+};
+
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
