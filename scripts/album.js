@@ -3,7 +3,6 @@ var setSong = function(songNumber){
     currentlyPlayingSongNumber = songNumber;
     //because song count has an offset, minus one is needed in the array number.
     currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber - 1];
-    //null case
 };
 
 var getSongNumberCell = function(number){
