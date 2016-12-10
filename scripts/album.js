@@ -1,4 +1,8 @@
 var setSong = function(songNumber){
+    
+    if (currentSoundFile) {
+        currentSoundFile.stop();
+    }
     //set current song to the number assigned.
     currentlyPlayingSongNumber = songNumber;
     //because song count has an offset, minus one is needed in the array number.
