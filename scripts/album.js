@@ -207,6 +207,12 @@ var previousSong = function() {
     
 };
 
+var togglePlayFromPlayerBar = funtion(){
+    
+    
+    
+};
+
 
  var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
  var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
@@ -220,9 +226,11 @@ var previousSong = function() {
 
  var $previousButton = $('.main-controls .previous');
  var $nextButton = $('.main-controls .next');
+ var $bottomBarPlayPause = $('.main-controls .play-pause');
 
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
     $previousButton.click(previousSong);
     $nextButton.click(nextSong);
+    $bottomBarPlayPause.click(togglePlayFromPlayBar());
  });
