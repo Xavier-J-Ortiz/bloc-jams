@@ -56,6 +56,7 @@ var createSongRow = function(songNumber, songName, songLength) {
             // Switch from Play -> Pause button to indicate new song is playing.
             setSong(songNumber);
             currentSoundFile.play();
+            updateSeekBarWhileSongPlays();
             
             var $volumeFill = $('.volume .fill');
             var $volumeThumb = $('.volume .thumb');
@@ -72,6 +73,7 @@ var createSongRow = function(songNumber, songName, songLength) {
                 $(this).html(pauseButtonTemplate);
                 $('.main-controls .play-pause').html(playerBarPauseButton);
                 currentSoundFile.play();
+                updateSeekBarWhileSongPlays()
             } else {
                 $(this).html(playButtonTemplate);
                 $('.main-controls .play-pause').html(playerBarPlayButton);
@@ -227,6 +229,7 @@ var nextSong = function() {
     //// currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
     setSong(currentSongIndex + 1);
     currentSoundFile.play();
+    updateSeekBarWhileSongPlays();
     
     // Update the Player Bar information
     $('.currently-playing .song-name').text(currentSongFromAlbum.title);
@@ -268,6 +271,7 @@ var previousSong = function() {
     
     setSong(currentSongIndex + 1);
     currentSoundFile.play();
+    updateSeekBarWhileSongPlays();
 
     // Update the Player Bar information
     $('.currently-playing .song-name').text(currentSongFromAlbum.title);
